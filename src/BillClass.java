@@ -1,8 +1,8 @@
+import java.io.Serializable;
 
-
-public class BillClass {
+public class BillClass implements Serializable {
     public Reason reason;
-    public int value;
+    public double value =0.00;
     public String remark;
     
     public BillClass(int value, Reason reason, String remark){
@@ -11,14 +11,15 @@ public class BillClass {
         this.remark = remark;
     }
     public BillClass(String value, String reason, String remark){
-        this. value =Integer.parseInt(value);
+        this. value =Double.parseDouble(value);
         
         this.reason= Reason.valueOf(reason);
         
         this.remark = remark;
     }
     public String toString(){
-        String s = Integer.toString(value) + "€\t" +reason.toString() + "\t" + remark;
+
+        String s =  value + "€\t" +reason.toString() + "\t" + remark;
         return s;
     }
 }

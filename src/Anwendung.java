@@ -9,9 +9,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 public class Anwendung {
     public static void main(String s[]) {
-        Month M = new Month(MonthName.September);
-        M.getEdited();
+        //Month M = new Month(MonthName.September);
+        //M.getEdited();
         System.out.println("testtetette");
       // MonthBillFX x = new MonthBillFX(M);
+        Start.go();
     }  
 }

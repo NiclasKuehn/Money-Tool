@@ -1,26 +1,18 @@
+import java.io.Serializable;
 import java.util.ArrayList;
-import javax.swing.JFrame;
-import javax.swing.DefaultListModel;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JPanel;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-
+import javax.swing.*;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import javax.swing.JOptionPane;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class Month {
+public class Month implements Serializable {
     private boolean used = false;
     private final ArrayList<BillClass>  BillArray= new ArrayList<BillClass>();
-    public MonthName Name;
+    private MonthName Name;
+
 
     public Month(MonthName Monat){
         this.Name=Monat;
@@ -50,6 +42,7 @@ public class Month {
     JTextField remarkTF = new JTextField("");
     JButton pushButton = new JButton();
     JTextArea BillListL = new JTextArea();
+    JTextArea SumLB = new JTextArea("Summe: ");
 
     
     panel.setLayout(null);
@@ -76,47 +69,78 @@ public class Month {
     pushButton.setBounds(280+offx,40+offy,70,25);
     panel.add(pushButton);
 
-    BillListL.setBounds(5,80,380,700);
+    BillListL.setBounds(5,80,280,700);
     BillListL.setEditable(false);
     panel.add(BillListL);
+    BillListL.setText(getBillistString());
+
+    SumLB.setBounds(290,80,160,300);
+    panel.add(SumLB);
+    SumLB.setText(getInfoString());
+
 
 
     pushButton.addActionListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            BillArray.add(new BillClass(valueTF.getText(), reasonCB.getSelectedItem().toString(), remarkTF.getText()));
-            String s = "";
-            for (int i = 0; i < BillArray.size(); i++) {
-                s+= Integer.toString(i)+".    "+ BillArray.get(i).toString() +" \n";
+            if(Utils.isNumber(valueTF.getText())) {
+                BillArray.add(new BillClass(valueTF.getText(), reasonCB.getSelectedItem().toString(), remarkTF.getText()));
+                BillListL.setText(getBillistString());
+                SumLB.setText(getInfoString());
             }
-            BillListL.setText(s);
         }
     });
+
    
     frame.add(panel);  
-    frame.setSize(400, 600);  
+    frame.setSize(500, 600);
     frame.setLocationRelativeTo(null);  
-    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  
+    //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     frame.addWindowListener(new java.awt.event.WindowAdapter() {
         @Override
         public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-            if (JOptionPane.showConfirmDialog(frame, 
-                "Speichern und verlassen? ", "", 
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION){
-                used = false;
-                System.exit(0);
-            }
+            used = false;
         }
     });
     frame.setVisible(true);  
 } 
 public boolean waitForClosedFrame(){
-    while(used)
-    {wait(1);}
+    //while(used)
+    //{wait(1);}
     return true;
 }
+public double getBillSum(){
+        double L=0;
+    for (int i = 0; i < BillArray.size(); i++) {
+        L+= BillArray.get(i).value;
+    }
+    return Math.round(L*100.0)/100.0;
+}
+private String getInfoString(){
+    String s="Gesamt :  ";
+    s+=this.getBillSum();
+    s+= "€\n\n\n";
+    for (Reason e :
+            Reason.values()) {
+        s+=e.toString()+":\t"+getSumOfReason(e)+"\n";
+    }
 
+    return s;
+}
+private String getBillistString(){
+    String s = "";
+    for (int i = 0; i < BillArray.size(); i++) {
+        s += Integer.toString(i) + ".    " + BillArray.get(i).toString() + " \n";
+    }
+    return s;
+}
+public double getSumOfReason(Reason Reason){
+        double p=0;
+    for (int i = 0; i <BillArray.size(); i++) {
+        if(BillArray.get(i).reason==Reason)p+=BillArray.get(i).value;
+    }
+        return p;
+}
     
 }
 
