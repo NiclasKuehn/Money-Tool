@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class PieChart extends JPanel {
+public class PieChart<Type extends BillContainer> extends JPanel {
 	private ArrayList<Double> value = new ArrayList<Double>();
 	private ArrayList<Integer> truevalue = new ArrayList<Integer>();
 	private ArrayList<String> Names = new ArrayList<String>();
@@ -23,6 +23,7 @@ public class PieChart extends JPanel {
 			}
 			j++;
 		}
+		
 		
 		double YearSumm = 0.0;
 		if (negativ) Caption = "Ausgaben";
@@ -49,6 +50,81 @@ public class PieChart extends JPanel {
 		}
 		
 		
+	}
+	
+	public PieChart(Type element, Boolean negativ) {
+		if (element.getClass() == Year.class) {
+			Year year = (Year) element;
+			double[] args = new double[Reason.values().length];
+			int j = 0;
+			for (Reason r : Reason.values()) {
+				for (int i = 0; i < 12; i++) {
+					args[j] += year.getMonth(i).getSumOfReason(r);
+				}
+				j++;
+			}
+			
+			
+			double YearSumm = 0.0;
+			if (negativ) Caption = "Ausgaben";
+			else Caption = "Einnahmen";
+			for (int i = 0; i < args.length; i++) {
+				if (negativ) {
+					if (args[i] < 0) {
+						YearSumm += Math.abs(args[i]);
+						value.add(Math.abs(args[i]));
+						Names.add(Reason.getStringValue()[i]);
+					}
+				} else if (args[i] > 0) {
+					YearSumm += Math.abs(args[i]);
+					value.add(Math.abs(args[i]));
+					Names.add(Reason.getStringValue()[i]);
+				}
+			}
+			
+			
+			double gradProProzent = 360.0 / Math.abs(YearSumm);//1 % = p Grad
+			
+			for (int i = 0; i < Names.size(); i++) {
+				truevalue.add((int) (Math.abs(value.get(i) * gradProProzent)));
+			}
+		} else {
+			Month month = (Month) element;
+			double[] args = new double[Reason.values().length];
+			int j = 0;
+			for (Reason r : Reason.values()) {
+				
+				args[j] += month.getSumOfReason(r);
+				
+				j++;
+			}
+			
+			
+			double YearSumm = 0.0;
+			if (negativ) Caption = "Ausgaben";
+			else Caption = "Einnahmen";
+			for (int i = 0; i < args.length; i++) {
+				if (negativ) {
+					if (args[i] < 0) {
+						YearSumm += Math.abs(args[i]);
+						value.add(Math.abs(args[i]));
+						Names.add(Reason.getStringValue()[i]);
+					}
+				} else if (args[i] > 0) {
+					YearSumm += Math.abs(args[i]);
+					value.add(Math.abs(args[i]));
+					Names.add(Reason.getStringValue()[i]);
+				}
+			}
+			
+			
+			double gradProProzent = 360.0 / Math.abs(YearSumm);//1 % = p Grad
+			
+			for (int i = 0; i < Names.size(); i++) {
+				truevalue.add((int) (Math.abs(value.get(i) * gradProProzent)));
+				
+			}
+		}
 	}
 	
 	public void paintComponent(Graphics g) {

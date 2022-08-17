@@ -3,27 +3,29 @@ import java.awt.*;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class Diagram extends JPanel {
+public class Diagram<Type extends BillContainer> extends JPanel {
 	private int value[] = new int[12];
-	private int start = 0;
 	
 	Color[] colors = {Color.red, Color.green, Color.blue, Color.orange, Color.cyan, Color.magenta, Color.pink, Color.yellow};
 	
-	public Diagram(String[] args) {
-		value = new int[args.length];
-		
-		for (int i = 0; i < args.length; i++) //Error at this line
-		{
-			value[i] = Integer.parseInt(args[i]);
-		}
-		
-	}
 	
 	public Diagram(Year year) {
 		for (int i = 0; i < 12; i++) {
 			value[i] = (int) Math.round(year.getMonth(i).getBillSum());
 		}
 		
+		
+	}
+	
+	public Diagram(Type element) {
+		if (element.getClass() == Year.class) {
+			Year year = (Year) element;
+			for (int i = 0; i < 12; i++) {
+				value[i] = (int) Math.round(year.getMonth(i).getBillSum());
+			}
+		} else {
+		
+		}
 		
 	}
 	
@@ -77,22 +79,5 @@ public class Diagram extends JPanel {
 		}
 		
 		
-	}
-	
-	
-	public static void main(String args[]) {
-		JFrame f = new JFrame("Piechart");
-		Diagram p = new Diagram(new String[]{"90", "90", "90", "70", "20", "80", "10", "20"});
-		
-		f.add(p);
-		p.setBounds(0, 0, 400, 400);
-		p.setPreferredSize(new Dimension(600, 600));
-		f.setSize(500, 500);
-		//f.pack();
-		f.setLocationRelativeTo(null);
-		f.setVisible(true);
-		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		f.repaint();
 	}
 }

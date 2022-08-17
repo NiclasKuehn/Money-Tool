@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.ArrayList;
 
-public class Year implements Serializable {
+public class Year extends BillContainer implements Serializable {
 	public int year;
 	
 	public void save() {
@@ -21,7 +21,7 @@ public class Year implements Serializable {
 	
 	private final ArrayList<Month> MonthList = new ArrayList<>();
 	
-	private Year() {
+	public Year() {
 	}
 	
 	;
@@ -45,7 +45,12 @@ public class Year implements Serializable {
 	public Month getMonth(int index) {
 		return MonthList.get(index);
 	}
-
+	
+	@Override
+	public String getName() {
+		return Integer.toString(this.year);
+	}
+	
 
 
     /*public double[] getDiagramData(int maxPixelHeight) {

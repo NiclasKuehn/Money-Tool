@@ -8,7 +8,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class Month implements Serializable {
+public class Month extends BillContainer implements Serializable {
 	private boolean used = false;
 	private final ArrayList<BillClass> BillArray = new ArrayList<BillClass>();
 	private MonthName Name;
