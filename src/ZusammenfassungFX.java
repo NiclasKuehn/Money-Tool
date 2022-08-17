@@ -7,9 +7,7 @@ import java.io.ObjectInputStream;
 public class ZusammenfassungFX {
 	private Year MainYear;
 	private double[] ReasonBills = new double[Reason.size];
-	private int[] PieArgs = new int[Reason.size];
 	private String ReasonText;
-	private double YearSumm;
 	private JFrame frame;
 	private JPanel panel;
 	
@@ -18,8 +16,9 @@ public class ZusammenfassungFX {
 	private JButton JahrAuswahlB;
 	private JButton WeiterB;
 	private JButton ZurückB;
-	private JEditorPane InformationEP;
-	private Pie PieChart;
+	private InfoBox InformationBox;
+	private PieChart PieEinnahmen;
+	private PieChart PieAusgaben;
 	private Diagram Diagram;
 	
 	
@@ -28,11 +27,14 @@ public class ZusammenfassungFX {
 		Calculate();
 		init();
 		setBounds();
-		setText();
 		Listeners();
 		addShow();
 	}
 	
+	private void Calculate() {
+	
+		
+	}
 	
 	private void init() {
 		frame = new JFrame("Übersicht   " + MainYear.year);
@@ -41,10 +43,13 @@ public class ZusammenfassungFX {
 		WeiterB = new JButton("-->");
 		ZurückB = new JButton("<--");
 		JahrTF = new JTextField(Integer.toString(MainYear.year));
-		InformationEP = new JEditorPane();
-		PieChart = new Pie(PieArgs);
+		InformationBox = new InfoBox(MainYear);
+		PieAusgaben = new PieChart(MainYear, true);
+		PieEinnahmen = new PieChart(MainYear, false);
+		Diagram = new Diagram(MainYear);
 		
 	}
+	
 	
 	private void setBounds() {
 		frame.setSize(1000, 1000);
@@ -52,52 +57,30 @@ public class ZusammenfassungFX {
 		int SchaltButtonGröße = 80;
 		ZurückB.setBounds(panel.getWidth() / 2 - SchaltButtonGröße - 5, panel.getHeight() - ZurückB.getWidth() - 95, SchaltButtonGröße, 25);
 		WeiterB.setBounds(panel.getWidth() / 2 + 5, panel.getHeight() - WeiterB.getWidth() - 95, SchaltButtonGröße, 25);
+		
 		JahrTF.setBounds(10, 10, 50, 25);
 		JahrAuswahlB.setBounds(65, 10, 40, 25);
-		InformationEP.setBounds(10, 40, panel.getWidth() - 40, panel.getHeight() - 90);
-		PieChart.setBounds(450, 50, 350, 250);
-		PieChart.setBackground(Color.WHITE);
-	}
-	
-	private void setText() {
-		InformationEP.setText("Gesamtausgaben:\t" + YearSumm + "\t€\n\n" + ReasonText);
-		InformationEP.setFont(new Font("Canvas", Font.PLAIN, 18));
-	}
-	
-	private void Calculate() {
-		ReasonText = "";
-		int j = 0;
-		for (Reason r : Reason.values()) {
-			ReasonText += r.name();
-			ReasonText += ":\t\t";
-			double x = 0;
-			for (int i = 0; i < 12; i++) {
-				x += MainYear.getMonth(i).getSumOfReason(r);
-			}
-			ReasonBills[j] = x;
-			j++;
-			ReasonText += x;
-			ReasonText += "\t€\n";
-		}
-		YearSumm = 0.0;
-		for (int i = 0; i < 12; i++) {
-			YearSumm += MainYear.getMonth(i).getBillSum();
-		}
-		double p = YearSumm / 360.0;
-		for (int i = 0; i < Reason.size; i++) {
-			PieArgs[i] = (int) Math.round(ReasonBills[i] / p);
-		}
+		InformationBox.setBounds(50, 40, 350, 270);
+		PieEinnahmen.setBounds(450, 320, 350, 250);
+		PieAusgaben.setBounds(50, 320, 350, 250);
+		Diagram.setBounds(50, 580, 860, 320);
 		
+		
+		PieEinnahmen.setBackground(Color.WHITE);
+		PieAusgaben.setBackground(Color.WHITE);
+		Diagram.setBackground(Color.WHITE);
 	}
+	
 	
 	private void Listeners() {
 	
 	}
 	
 	private void addShow() {
-		
-		panel.add(PieChart);
-		panel.add(InformationEP);
+		panel.add(Diagram);
+		panel.add(PieAusgaben);
+		panel.add(PieEinnahmen);
+		panel.add(InformationBox);
 		panel.add(JahrAuswahlB);
 		panel.add(JahrTF);
 		panel.add(ZurückB);
