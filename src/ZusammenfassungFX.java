@@ -3,10 +3,13 @@ import java.awt.*;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.util.ArrayList;
 
 public class ZusammenfassungFX {
 	private Year MainYear;
+	private double[] ReasonBills = new double[Reason.size];
+	private int[] PieArgs = new int[Reason.size];
+	private String ReasonText;
+	private double YearSumm;
 	private JFrame frame;
 	private JPanel panel;
 	
@@ -16,11 +19,14 @@ public class ZusammenfassungFX {
 	private JButton WeiterB;
 	private JButton ZurückB;
 	private JEditorPane InformationEP;
+	private Pie PieChart;
+	private Diagram Diagram;
+	
 	
 	public ZusammenfassungFX(Year Year) {
-		//loadYear(Year);
 		MainYear = Year;
-		setNames();
+		Calculate();
+		init();
 		setBounds();
 		setText();
 		Listeners();
@@ -28,7 +34,7 @@ public class ZusammenfassungFX {
 	}
 	
 	
-	private void setNames() {
+	private void init() {
 		frame = new JFrame("Übersicht   " + MainYear.year);
 		panel = new JPanel(null);
 		JahrAuswahlB = new JButton("go");
@@ -36,6 +42,7 @@ public class ZusammenfassungFX {
 		ZurückB = new JButton("<--");
 		JahrTF = new JTextField(Integer.toString(MainYear.year));
 		InformationEP = new JEditorPane();
+		PieChart = new Pie(PieArgs);
 		
 	}
 	
@@ -48,11 +55,18 @@ public class ZusammenfassungFX {
 		JahrTF.setBounds(10, 10, 50, 25);
 		JahrAuswahlB.setBounds(65, 10, 40, 25);
 		InformationEP.setBounds(10, 40, panel.getWidth() - 40, panel.getHeight() - 90);
-		
+		PieChart.setBounds(450, 50, 350, 250);
+		PieChart.setBackground(Color.WHITE);
 	}
 	
 	private void setText() {
-		String ReasonText = "";
+		InformationEP.setText("Gesamtausgaben:\t" + YearSumm + "\t€\n\n" + ReasonText);
+		InformationEP.setFont(new Font("Canvas", Font.PLAIN, 18));
+	}
+	
+	private void Calculate() {
+		ReasonText = "";
+		int j = 0;
 		for (Reason r : Reason.values()) {
 			ReasonText += r.name();
 			ReasonText += ":\t\t";
@@ -60,15 +74,20 @@ public class ZusammenfassungFX {
 			for (int i = 0; i < 12; i++) {
 				x += MainYear.getMonth(i).getSumOfReason(r);
 			}
+			ReasonBills[j] = x;
+			j++;
 			ReasonText += x;
 			ReasonText += "\t€\n";
 		}
-		Double YearSumm = 0.0;
+		YearSumm = 0.0;
 		for (int i = 0; i < 12; i++) {
 			YearSumm += MainYear.getMonth(i).getBillSum();
 		}
-		InformationEP.setText("Gesamtausgaben:\t" + YearSumm + "\t€\n\n" + ReasonText);
-		InformationEP.setFont(new Font("Canvas", Font.PLAIN, 18));
+		double p = YearSumm / 360.0;
+		for (int i = 0; i < Reason.size; i++) {
+			PieArgs[i] = (int) Math.round(ReasonBills[i] / p);
+		}
+		
 	}
 	
 	private void Listeners() {
@@ -76,15 +95,21 @@ public class ZusammenfassungFX {
 	}
 	
 	private void addShow() {
+		
+		panel.add(PieChart);
 		panel.add(InformationEP);
 		panel.add(JahrAuswahlB);
 		panel.add(JahrTF);
 		panel.add(ZurückB);
 		panel.add(WeiterB);
+		
 		frame.add(panel);
-		frame.setResizable(false);
+		
+		
 		frame.setLocationRelativeTo(null);
+		frame.setResizable(true);
 		frame.setVisible(true);
+		frame.repaint();
 	}
 	
 	public void loadYear(int Year) {
