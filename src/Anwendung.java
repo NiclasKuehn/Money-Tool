@@ -11,7 +11,7 @@ public class Anwendung {
     public static void main(String s[]) {
         //Month M = new Month(MonthName.September);
         //M.getEdited();
-        System.out.println("testtetette");
+        System.out.println("tette");
       // MonthBillFX x = new MonthBillFX(M);
         Start.go();
     }  
