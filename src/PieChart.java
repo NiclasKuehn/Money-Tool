@@ -11,7 +11,8 @@ public class PieChart<Type extends BillContainer> extends JPanel {
 	private String Caption;
 	private int start = 0;
 	
-	Color[] colors = {Color.red, Color.green, Color.blue, Color.orange, Color.cyan, Color.magenta, Color.pink, Color.yellow};
+	Color[] colors = {Color.blue, Color.orange, Color.cyan, Color.pink, Color.magenta, Color.yellow, Color.red, Color.green};
+	int rand = (int) (Math.random() * 10);
 	
 	
 	public PieChart(Year year, Boolean negativ) {
@@ -139,15 +140,15 @@ public class PieChart<Type extends BillContainer> extends JPanel {
 		int size = Math.min(this.getWidth(), this.getHeight()) + -5;
 		int j = 0;
 		for (String name : Names) {
-			g.drawString(name, 20, 25 * j + 53);
+			g.drawString(name, 25, 25 * j + 53);
 			j++;
 		}
 		
 		int p = 0;
 		for (int i = 0; i < truevalue.size(); i++) {
 			p += truevalue.get(i);
-			g.setColor(colors[i % colors.length]);
-			g.fillRect(0, 25 * i + 40, 15, 15);
+			g.setColor(colors[(i + rand) % colors.length]);
+			g.fillRect(5, 25 * i + 40, 15, 15);
 			
 			g.fillArc(this.getWidth() - size, this.getHeight() - size, size - 20, size - 20, start, truevalue.get(i));
 			start = start + truevalue.get(i);

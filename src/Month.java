@@ -1,10 +1,6 @@
 import java.io.Serializable;
 import java.util.ArrayList;
 import javax.swing.*;
-
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -31,7 +27,7 @@ public class Month extends BillContainer implements Serializable {
 		return Name.toString();
 	}
 	
-	public ArrayList<BillClass> getBillArray() {
+	public ArrayList<BillClass> getBillList() {
 		return BillArray;
 	}
 	

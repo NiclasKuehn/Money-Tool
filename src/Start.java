@@ -34,7 +34,7 @@ public class Start {
 	}
 	
 	private void setCaption() {
-		this.Caption.setText("Jahresplan   " + MainYear.year);
+		this.Caption.setText("Jahresplan   " + MainYear.getName());
 	}
 	
 	private void buildButtons() {
@@ -87,7 +87,7 @@ public class Start {
 		
 		
 		JahrAuswahlB.setBounds(80, 50, 48, 25);
-		JahrTF = new JTextField(Integer.toString(MainYear.year));
+		JahrTF = new JTextField(MainYear.getName());
 		JahrTF.setBounds(30, 50, 40, 25);
 		
 		JahrAuswahlB.addActionListener(new ActionListener() {

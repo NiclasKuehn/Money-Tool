@@ -3,7 +3,6 @@ import java.awt.*;
 
 public class Infopanel<Type extends BillContainer> extends JPanel {
 	private Type Element;
-	private JTextField JahrTF;
 	private InfoBox InformationBox;
 	private PieChart PieEinnahmen;
 	private PieChart PieAusgaben;
@@ -19,7 +18,6 @@ public class Infopanel<Type extends BillContainer> extends JPanel {
 	private void init() {
 		
 		this.setLayout(null);
-		JahrTF = new JTextField(Element.getName());
 		InformationBox = new InfoBox(Element);
 		PieAusgaben = new PieChart(Element, true);
 		PieEinnahmen = new PieChart(Element, false);
@@ -29,10 +27,10 @@ public class Infopanel<Type extends BillContainer> extends JPanel {
 	
 	private void setBounds() {
 		
-		InformationBox.setBounds(50, 40, 350, 270);
-		PieEinnahmen.setBounds(450, 320, 350, 250);
-		PieAusgaben.setBounds(50, 320, 350, 250);
-		Diagram.setBounds(50, 580, 860, 320);
+		InformationBox.setBounds(20, 50, 670, 510);
+		PieEinnahmen.setBounds(700, 50, 460, 250);
+		PieAusgaben.setBounds(700, 310, 460, 250);
+		Diagram.setBounds(20, 570, 1140, 320);
 		
 		PieEinnahmen.setBackground(Color.WHITE);
 		PieAusgaben.setBackground(Color.WHITE);
@@ -44,7 +42,5 @@ public class Infopanel<Type extends BillContainer> extends JPanel {
 		this.add(PieAusgaben);
 		this.add(PieEinnahmen);
 		this.add(InformationBox);
-		this.add(JahrTF);
-		
 	}
 }

@@ -64,16 +64,22 @@ public class Diagram<Type extends BillContainer> extends JPanel {
 		g.drawLine(0, this.getHeight() - offsetY, this.getWidth(), this.getHeight() - offsetY);
 		int j = 0;
 		int yy = this.getHeight() - offsetY;
-		for (MonthName reason : MonthName.values()
+		for (MonthName monthName : MonthName.values()
 		
 		) {
 			g.setColor(Color.BLACK);
-			g.drawString(reason.toString(), 70 * j + 10, this.getHeight() - 17);
+			g.drawString(monthName.toString(), 70 * j + 10, this.getHeight() - 17);
+			if (paintvalue[j] < 0) g.setColor(Color.RED);
+			else g.setColor(new Color(0, 100, 0));
 			g.drawString(Integer.toString(value[j]) + "€", 70 * j + 13, this.getHeight() - 3);
-			g.setColor(colors[j % colors.length]);
-			if (j < paintvalue.length)
-				if (paintvalue[j] < 0) g.fillRect(70 * j + 20, yy, 20, Math.abs(paintvalue[j]));
-				else g.fillRect(70 * j + 20, yy - paintvalue[j], 20, Math.abs(paintvalue[j]));
+			
+			if (paintvalue[j] < 0) {
+				g.setColor(Color.red);
+				g.fillRect(70 * j + 20, yy, 20, Math.abs(paintvalue[j]));
+			} else {
+				g.setColor(new Color(0, 200, 0));
+				g.fillRect(70 * j + 20, yy - paintvalue[j], 20, Math.abs(paintvalue[j]));
+			}
 			
 			j++;
 		}
