@@ -1,6 +1,4 @@
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
+import java.io.*;
 
 public class Storage {
 	public static boolean isYear(int Year) {
@@ -22,7 +20,9 @@ public class Storage {
 		
 	}
 	
-	public static Year loadYear(int Year) {
+	/*public static Year loadYear(int Year) {
+		Year year = new Year();
+		year.StringToYear();
 		try {
 			ObjectInputStream stream = new ObjectInputStream(new FileInputStream(Integer.toString(Year) + ".txt"));
 			Year MainYear = (Year) stream.readObject();
@@ -32,14 +32,54 @@ public class Storage {
 		} catch (ClassNotFoundException cnfex) {
 			
 			System.err.println("Die Klasse des geladenen Objekts konnte nicht gefunden werden.");
-			return null;
+			
 			
 		} catch (IOException ioex) {
 			
 			System.err.println("Das Objekt konnte nicht geladen werden.");
 			ioex.printStackTrace();
-			return null;
 			
+			
+		}
+		return new Year(Year);
+	}*/
+	public static Year loadYear(int Year) {
+		
+		try {
+			
+			
+			ObjectInputStream stream = new ObjectInputStream(new FileInputStream(Integer.toString(Year) + ".txt"));
+			String MainYearString = (String) stream.readObject();
+			String y = MainYearString.substring(1, 5);
+			Year year = new Year(Integer.parseInt(y));
+			year.StringToYear(MainYearString);
+			stream.close();
+			return year;
+			
+		} catch (ClassNotFoundException cnfex) {
+			
+			System.err.println("Die Klasse des geladenen Objekts konnte nicht gefunden werden.");
+			
+			
+		} catch (IOException ioex) {
+			
+			System.err.println("Das Objekt konnte nicht geladen werden.");
+			ioex.printStackTrace();
+			
+			
+		}
+		return new Year(Year);
+	}
+	
+	public static void saveYear(Year year) {
+		System.out.printf(year.toSaveString());
+		try {
+			ObjectOutputStream stream = new ObjectOutputStream(new FileOutputStream(year.getName() + ".txt"));
+			stream.writeObject(year.toSaveString());
+			stream.close();
+		} catch (IOException ioex) {
+			System.err.println("Fehler beim Schreiben des Objekts aufgetreten.");
+			ioex.printStackTrace();
 		}
 		
 		

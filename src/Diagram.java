@@ -24,7 +24,11 @@ public class Diagram<Type extends BillContainer> extends JPanel {
 				value[i] = (int) Math.round(year.getMonth(i).getBillSum());
 			}
 		} else {
-		
+			Year year = new Year();
+			year.setMonth((Month) element);
+			for (int i = 0; i < 12; i++) {
+				value[i] = (int) Math.round(year.getMonth(i).getBillSum());
+			}
 		}
 		
 	}
@@ -68,17 +72,17 @@ public class Diagram<Type extends BillContainer> extends JPanel {
 		
 		) {
 			g.setColor(Color.BLACK);
-			g.drawString(monthName.toString(), 70 * j + 10, this.getHeight() - 17);
+			g.drawString(monthName.toString(), this.getWidth() / 12 * j + this.getWidth() / 70, this.getHeight() - 17);
 			if (paintvalue[j] < 0) g.setColor(Color.RED);
 			else g.setColor(new Color(0, 100, 0));
-			g.drawString(Integer.toString(value[j]) + "€", 70 * j + 13, this.getHeight() - 3);
+			g.drawString(Integer.toString(value[j]) + "€", this.getWidth() / 12 * j + this.getWidth() / 70, this.getHeight() - 3);
 			
 			if (paintvalue[j] < 0) {
 				g.setColor(Color.red);
-				g.fillRect(70 * j + 20, yy, 20, Math.abs(paintvalue[j]));
+				g.fillRect(this.getWidth() / 12 * j + this.getWidth() / 100, yy, this.getWidth() / 20, Math.abs(paintvalue[j]));
 			} else {
 				g.setColor(new Color(0, 200, 0));
-				g.fillRect(70 * j + 20, yy - paintvalue[j], 20, Math.abs(paintvalue[j]));
+				g.fillRect(this.getWidth() / 12 * j + this.getWidth() / 100, yy - paintvalue[j], this.getWidth() / 20, Math.abs(paintvalue[j]));
 			}
 			
 			j++;

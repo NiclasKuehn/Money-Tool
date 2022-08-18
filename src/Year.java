@@ -2,25 +2,13 @@ import java.io.*;
 import java.util.ArrayList;
 
 public class Year extends BillContainer implements Serializable {
-	private final int year;
+	private int year;
 	private ArrayList<BillClass> BillListL = new ArrayList<BillClass>();
-	
-	public void save() {
-		try {
-			ObjectOutputStream stream = new ObjectOutputStream(new FileOutputStream(Integer.toString(year) + ".txt"));
-			stream.writeObject(this);
-			stream.close();
-		} catch (IOException ioex) {
-			System.err.println("Fehler beim Schreiben des Objekts aufgetreten.");
-			ioex.printStackTrace();
-		}
-	}
 	
 	
 	private final ArrayList<Month> MonthList = new ArrayList<>();
 	
-	
-	public Year(int year) {
+	public Year() {
 		MonthList.add(new Month(MonthName.Januar));
 		MonthList.add(new Month(MonthName.Febuar));
 		MonthList.add(new Month(MonthName.März));
@@ -33,11 +21,20 @@ public class Year extends BillContainer implements Serializable {
 		MonthList.add(new Month(MonthName.Oktober));
 		MonthList.add(new Month(MonthName.November));
 		MonthList.add(new Month(MonthName.Dezember));
+	}
+	
+	public Year(int year) {
+		this();
 		this.year = year;
 	}
 	
 	public Month getMonth(int index) {
 		return MonthList.get(index);
+	}
+	
+	public void setMonth(Month month) {
+		
+		MonthList.set(month.getMonthName().ordinal(), month);
 	}
 	
 	@Override
@@ -57,4 +54,26 @@ public class Year extends BillContainer implements Serializable {
 		return this.year;
 	}
 	
+	public String toSaveString() {
+		String s = "<" + this.getName() + "\n";
+		for (Month M : MonthList
+		) {
+			s += M.toSaveString();
+			
+		}
+		return s + ">\n\n";
+	}
+	
+	public void StringToYear(String input) {
+		String[] Monate = input.split("/");
+		int i = 1;
+		
+		for (Month M : MonthList
+		) {
+			M.StringToMonth(Monate[i]);
+			i++;
+		}
+		System.out.println(Monate[1]);
+		
+	}
 }

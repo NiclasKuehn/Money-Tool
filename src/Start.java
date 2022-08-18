@@ -1,9 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -26,8 +23,8 @@ public class Start {
 	
 	private Start() {
 		
-		
-		this.loadYear(ThisYear);
+		MainYear = Storage.loadYear(ThisYear);
+		//this.loadYear(ThisYear);
 		this.buildFrame();
 		this.buildButtons();
 		
@@ -61,7 +58,7 @@ public class Start {
 				e.addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent x) {
-						
+						Storage.saveYear(MainYear);
 						MainYear.getMonth(e.getMonthID()).getEdited();
 						
 						
@@ -93,10 +90,11 @@ public class Start {
 		JahrAuswahlB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				MainYear.save();
+				Storage.saveYear(MainYear);
 				MainYear = new Year(Integer.parseInt(JahrTF.getText()));
-				loadYear(Integer.parseInt(JahrTF.getText()));
+				MainYear = Storage.loadYear(MainYear.getYear());
 				setCaption();
+				Storage.saveYear(MainYear);
 			}
 		});
 		panel.add(JahrAuswahlB);
@@ -108,6 +106,7 @@ public class Start {
 		Uebersicht.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				Storage.saveYear(MainYear);
 				Uebersichtsanzeige();
 			}
 		});
@@ -125,7 +124,7 @@ public class Start {
 						"Speichern und verlassen? ", "",
 						JOptionPane.YES_NO_OPTION,
 						JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
-					MainYear.save();
+					Storage.saveYear(MainYear);
 					System.exit(0);
 				}
 			}
@@ -137,19 +136,6 @@ public class Start {
 		Start s = new Start();
 	}
 	
-	public void loadYear(int Year) {
-		try {
-			ObjectInputStream stream = new ObjectInputStream(new FileInputStream(Integer.toString(Year) + ".txt"));
-			MainYear = (Year) stream.readObject();
-			stream.close();
-		} catch (ClassNotFoundException cnfex) {
-			System.err.println("Die Klasse des geladenen Objekts konnte nicht gefunden werden.");
-		} catch (IOException ioex) {
-			System.err.println("Das Objekt konnte nicht geladen werden.");
-			ioex.printStackTrace();
-		}
-		
-	}
 	
 	private void Uebersichtsanzeige() {
 		ZusammenfassungFX x = new ZusammenfassungFX(MainYear);

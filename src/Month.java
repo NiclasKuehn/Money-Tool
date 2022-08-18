@@ -1,8 +1,7 @@
+import java.awt.event.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class Month extends BillContainer implements Serializable {
 	private boolean used = false;
@@ -119,6 +118,10 @@ public class Month extends BillContainer implements Serializable {
 		return Math.round(L * 100.0) / 100.0;
 	}
 	
+	public MonthName getMonthName() {
+		return this.Name;
+	}
+	
 	public String getInfoString() {
 		String s = "Gesamt :  ";
 		s += this.getBillSum();
@@ -147,6 +150,31 @@ public class Month extends BillContainer implements Serializable {
 		return p;
 	}
 	
+	
+	public String toSaveString() {
+		String s = "";
+		for (BillClass billClass : BillArray) {
+			s += billClass.toSaveString();
+			
+		}
+		return "/" + this.getName() + "\n" + s + "\n";
+	}
+	
+	public void StringToMonth(String input) {
+		String[] Bills = input.split("#");
+		if (Bills.length < 2) return;
+		System.out.println(Bills[0]);
+		int i = 1;
+		for (String s : Bills
+		) {
+			if (i > 1) {
+				BillClass b = new BillClass();
+				b.StringToBill(s);
+				BillArray.add(b);
+			}
+			i++;
+		}
+	}
 }
 
 
