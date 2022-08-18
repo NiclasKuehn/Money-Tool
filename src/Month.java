@@ -2,6 +2,7 @@ import java.awt.event.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import javax.swing.*;
+import javax.swing.text.Document;
 
 public class Month extends BillContainer implements Serializable {
 	private boolean used = false;
@@ -62,22 +63,80 @@ public class Month extends BillContainer implements Serializable {
 		reasonCB.setBounds(70 + offx, 40 + offy, 90, 25);
 		panel.add(reasonCB);
 		
+		reasonCB.setKeySelectionManager(new JComboBox.KeySelectionManager() {
+			@Override
+			public int selectionForKey(char aKey, ComboBoxModel<?> aModel) {
+				for (Reason r :
+						Reason.values()) {
+					if (reasonCB.getSelectedIndex() != r.ordinal()) {
+						if (Character.toLowerCase(aKey) == Character.toLowerCase(r.name().charAt(0)))
+							return r.ordinal();
+					}
+				}
+				return -1;
+			}
+		});
+		reasonCB.addKeyListener(new KeyAdapter() {
+			
+			@Override
+			public void keyReleased(KeyEvent event) {
+				if (event.getKeyChar() == KeyEvent.VK_ENTER) {
+					BillArray.add(new BillClass(valueTF.getText(), reasonCB.getSelectedItem().toString(), remarkTF.getText()));
+					BillListL.setText(getBillistString());
+					SumLB.setText(getInfoString());
+					valueTF.setText("");
+					remarkTF.setText("");
+				}
+			}
+		});
+		
 		remarkTF.setBounds(170 + offx, 40 + offy, 100, 25);
 		panel.add(remarkTF);
 		
 		pushButton.setText("next");
 		pushButton.setBounds(280 + offx, 40 + offy, 70, 25);
 		panel.add(pushButton);
+		pushButton.setFocusable(false);
 		
 		BillListL.setBounds(5, 80, 280, 700);
 		BillListL.setEditable(false);
 		panel.add(BillListL);
 		BillListL.setText(getBillistString());
+		BillListL.setFocusable(false);
 		
 		SumLB.setBounds(290, 80, 160, 300);
 		panel.add(SumLB);
 		SumLB.setText(getInfoString());
+		SumLB.setEditable(false);
+		SumLB.setFocusable(false);
 		
+		valueTF.addActionListener(new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (Utils.isNumber(valueTF.getText())) {
+					BillArray.add(new BillClass(valueTF.getText(), reasonCB.getSelectedItem().toString(), remarkTF.getText()));
+					BillListL.setText(getBillistString());
+					SumLB.setText(getInfoString());
+				}
+				valueTF.setText("");
+				remarkTF.setText("");
+				
+			}
+		});
+		remarkTF.addActionListener(new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (Utils.isNumber(valueTF.getText())) {
+					BillArray.add(new BillClass(valueTF.getText(), reasonCB.getSelectedItem().toString(), remarkTF.getText()));
+					BillListL.setText(getBillistString());
+					SumLB.setText(getInfoString());
+				}
+				valueTF.setText("");
+				remarkTF.setText("");
+				
+				
+			}
+		});
 		
 		pushButton.addActionListener(new ActionListener() {
 			@Override

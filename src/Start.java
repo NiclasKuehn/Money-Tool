@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
@@ -19,7 +20,7 @@ public class Start {
 	private JTextField JahrTF;
 	
 	private int ThisYear = new GregorianCalendar().get(Calendar.YEAR);
-	
+	private int ThisMonth = new GregorianCalendar().get(Calendar.MONTH);
 	
 	private Start() {
 		
@@ -27,6 +28,7 @@ public class Start {
 		//this.loadYear(ThisYear);
 		this.buildFrame();
 		this.buildButtons();
+		this.ActionListeners();
 		
 	}
 	
@@ -38,6 +40,7 @@ public class Start {
 		for (int i = 0; i < 12; i++) {
 			MButtons.add(new JMButton());
 		}
+		
 		//Buttons erstellen
 		{
 			int x = 0;
@@ -45,6 +48,7 @@ public class Start {
 			int j = 0;
 			for (JMButton e :
 					MButtons) {
+				e.setBackground(new Color(153, 204, 255));
 				e.setText((MainYear.getMonth(j).getName()));
 				e.setMonthID(j);
 				e.setBounds(30 + x, 150 + y, 160, 60);
@@ -55,19 +59,12 @@ public class Start {
 					x = 0;
 					y += e.getHeight() + 10;
 				}
-				e.addActionListener(new ActionListener() {
-					@Override
-					public void actionPerformed(ActionEvent x) {
-						Storage.saveYear(MainYear);
-						MainYear.getMonth(e.getMonthID()).getEdited();
-						
-						
-					}
-				});
 				j++;
 			}
 			
 		}
+		MButtons.get(this.ThisMonth).setBackground(new Color(100, 255, 100));
+		
 	}
 	
 	private void buildFrame() {
@@ -87,6 +84,33 @@ public class Start {
 		JahrTF = new JTextField(MainYear.getName());
 		JahrTF.setBounds(30, 50, 40, 25);
 		
+		
+		panel.add(JahrAuswahlB);
+		panel.add(JahrTF);
+		
+		
+		Uebersicht.setBounds(300, 50, 180, 25);
+		panel.add(Uebersicht);
+		
+		panel.setLayout(null);
+		
+		
+		frame.add(panel);
+		
+		frame.setLocationRelativeTo(null);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		frame.setVisible(true);
+	}
+	
+	private void ActionListeners() {
+		Uebersicht.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Storage.saveYear(MainYear);
+				Uebersichtsanzeige();
+			}
+		});
 		JahrAuswahlB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -97,26 +121,19 @@ public class Start {
 				Storage.saveYear(MainYear);
 			}
 		});
-		panel.add(JahrAuswahlB);
-		panel.add(JahrTF);
-		
-		
-		Uebersicht.setBounds(300, 50, 180, 25);
-		panel.add(Uebersicht);
-		Uebersicht.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				Storage.saveYear(MainYear);
-				Uebersichtsanzeige();
-			}
-		});
-		panel.setLayout(null);
-		
-		
-		frame.add(panel);
-		
-		frame.setLocationRelativeTo(null);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		for (JMButton e :
+				MButtons) {
+			e.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent x) {
+					Storage.saveYear(MainYear);
+					MainYear.getMonth(e.getMonthID()).getEdited();
+					
+					
+				}
+			});
+			
+		}
 		frame.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent windowEvent) {
@@ -129,7 +146,6 @@ public class Start {
 				}
 			}
 		});
-		frame.setVisible(true);
 	}
 	
 	public static void go() {

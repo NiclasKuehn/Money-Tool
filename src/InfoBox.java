@@ -58,9 +58,9 @@ public class InfoBox<Type extends BillContainer> extends JTextArea {
 		}
 		
 		
-		AusgabenText = " Ausgaben: " + Long.toString(Math.round(a)) + "€\n";
-		EinnahmenText = " Einnahmen: " + Long.toString(Math.round(e)) + "€\n";
-		GesamtProfit = " Gesamtprofit: " + Long.toString(Math.round(g)) + "€\n";
+		AusgabenText = " Ausgaben:\t\t" + Long.toString(Math.round(a)) + "\t€\n";
+		EinnahmenText = " Einnahmen:\t\t" + Long.toString(Math.round(e)) + "\t€\n";
+		GesamtProfit = " Gesamtprofit:\t\t" + Long.toString(Math.round(g)) + "\t€\n";
 		calcMinMax();
 	}
 	
