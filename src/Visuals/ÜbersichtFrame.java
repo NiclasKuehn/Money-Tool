@@ -64,6 +64,8 @@ public class ÜbersichtFrame {
 	}
 	
 	private void changeBounds() {
+		
+		
 		int SchaltButtonGröße = frame.getWidth() / 20;
 		int SchaltButtonheight = frame.getHeight() / 40;
 		ZurückB.setBounds(frame.getWidth() / 2 - SchaltButtonGröße - 5, frame.getHeight() - SchaltButtonheight - 45, SchaltButtonGröße, SchaltButtonheight);
@@ -71,6 +73,7 @@ public class ÜbersichtFrame {
 		MonthYearToggleB.setBounds(frame.getWidth() / 2 - 90, frame.getHeight() / 100, 180, 25);
 		panel.setBounds(0, 0, frame.getWidth() - 15, frame.getHeight() - 40);
 		panel.changeBounds();
+		
 	}
 	
 	
@@ -79,6 +82,7 @@ public class ÜbersichtFrame {
 			@Override
 			public void componentResized(ComponentEvent e) {
 				super.componentResized(e);
+				
 				changeBounds();
 			}
 		});
@@ -95,6 +99,7 @@ public class ÜbersichtFrame {
 					panel = new Infopanel<Year>(MainYear);
 					
 				}
+				
 				changeBounds();
 				addShow();
 			}
@@ -156,6 +161,7 @@ public class ÜbersichtFrame {
 		frame.setResizable(true);
 		frame.setVisible(true);
 		frame.repaint();
+		
 	}
 	
 	public boolean loadYear(int Year) {
