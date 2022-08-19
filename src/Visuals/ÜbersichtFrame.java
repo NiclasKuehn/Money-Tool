@@ -6,10 +6,7 @@ import Data.Year;
 import Visuals.Containers.Infopanel;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
+import java.awt.event.*;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -73,11 +70,53 @@ public class ÜbersichtFrame {
 		MonthYearToggleB.setBounds(frame.getWidth() / 2 - 90, frame.getHeight() / 100, 180, 25);
 		panel.setBounds(0, 0, frame.getWidth() - 15, frame.getHeight() - 40);
 		panel.changeBounds();
+		frame.requestFocus();
 		
 	}
 	
 	
 	private void Listeners() {
+		frame.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				super.keyPressed(e);
+				if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+					frame.remove(panel);
+					if (!YearActive) {
+						
+						Monthcount = (Monthcount + 1) % 12;
+						panel = new Infopanel<Month>(MainYear.getMonth(Monthcount));
+						
+					} else {
+						
+						if (Storage.isYear(MainYear.getYear() + 1)) {
+							MainYear = Storage.loadYear(MainYear.getYear() + 1);
+							panel = new Infopanel<Year>(MainYear);
+						}
+					}
+					changeBounds();
+					addShow();
+					
+				} else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+					frame.remove(panel);
+					if (!YearActive) {
+						Monthcount = ((Monthcount - 1) % 12);
+						if (Monthcount < 0) Monthcount = Monthcount + 12;
+						panel = new Infopanel<Month>(MainYear.getMonth(Monthcount));
+					} else {
+						if (Storage.isYear(MainYear.getYear() - 1)) {
+							MainYear = Storage.loadYear(MainYear.getYear() - 1);
+							panel = new Infopanel<Year>(MainYear);
+						}
+					}
+					changeBounds();
+					addShow();
+					
+					
+				}
+			}
+		});
+		
 		frame.addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentResized(ComponentEvent e) {
@@ -183,4 +222,5 @@ public class ÜbersichtFrame {
 		
 		
 	}
+	
 }

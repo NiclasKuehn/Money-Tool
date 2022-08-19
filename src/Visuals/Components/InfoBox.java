@@ -96,6 +96,7 @@ public class InfoBox<Type extends BillContainer> extends JTextArea {
 		this.setFont(new Font("Canvas", Font.PLAIN, 15));
 		String s = "\n\n" + AusgabenText + EinnahmenText + GesamtProfit + "\n" + ReasonText + NiceInfoText;
 		this.setText(s);
+		this.setEditable(false);
 	}
 	
 }
