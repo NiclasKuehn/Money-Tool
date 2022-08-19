@@ -27,7 +27,7 @@ public class InfoBox<Type extends BillContainer> extends JTextArea {
 			
 			
 			for (Reason r : Reason.values()) {
-				ReasonText += "    -" + r.name();
+				ReasonText += "   -" + r.name();
 				ReasonText += ":\t\t";
 				double x = 0;
 				for (int i = 0; i < 12; i++) {
