@@ -1,9 +1,10 @@
-package Visuals;
+package Visuals.Components;
 
 import Data.BillContainer;
 import Data.Month;
 import Data.Year;
 import Enums.MonthName;
+import Visuals.QualitySettings;
 
 import java.awt.*;
 

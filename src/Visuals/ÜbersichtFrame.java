@@ -3,15 +3,18 @@ package Visuals;
 import Data.Month;
 import Data.Storage;
 import Data.Year;
+import Visuals.Containers.Infopanel;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 
-public class ZusammenfassungFX {
+public class ÜbersichtFrame {
 	private Year MainYear;
 	private JFrame frame;
 	private Infopanel panel;
@@ -24,7 +27,7 @@ public class ZusammenfassungFX {
 	private int Monthcount = 0;
 	
 	
-	public ZusammenfassungFX(Year Year) {
+	public ÜbersichtFrame(Year Year) {
 		MainYear = Year;
 		Calculate();
 		init();
@@ -56,12 +59,29 @@ public class ZusammenfassungFX {
 		WeiterB.setBounds(panel.getWidth() / 2 + 5, panel.getHeight() - WeiterB.getWidth() - 95, SchaltButtonGröße, 25);
 		
 		
-		MonthYearToggleB.setBounds(65, 10, 120, 25);
+		MonthYearToggleB.setBounds(500, 10, 180, 25);
 		
+	}
+	
+	private void changeBounds() {
+		int SchaltButtonGröße = frame.getWidth() / 20;
+		int SchaltButtonheight = frame.getHeight() / 40;
+		ZurückB.setBounds(frame.getWidth() / 2 - SchaltButtonGröße - 5, frame.getHeight() - SchaltButtonheight - 45, SchaltButtonGröße, SchaltButtonheight);
+		WeiterB.setBounds(frame.getWidth() / 2 + 5, frame.getHeight() - SchaltButtonheight - 45, SchaltButtonGröße, SchaltButtonheight);
+		MonthYearToggleB.setBounds(frame.getWidth() / 2 - 90, frame.getHeight() / 100, 180, 25);
+		panel.setBounds(0, 0, frame.getWidth() - 15, frame.getHeight() - 40);
+		panel.changeBounds();
 	}
 	
 	
 	private void Listeners() {
+		frame.addComponentListener(new ComponentAdapter() {
+			@Override
+			public void componentResized(ComponentEvent e) {
+				super.componentResized(e);
+				changeBounds();
+			}
+		});
 		MonthYearToggleB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -69,11 +89,13 @@ public class ZusammenfassungFX {
 				if (YearActive) {
 					YearActive = false;
 					panel = new Infopanel<Month>(MainYear.getMonth(Monthcount));
+					
 				} else {
 					YearActive = true;
 					panel = new Infopanel<Year>(MainYear);
+					
 				}
-				
+				changeBounds();
 				addShow();
 			}
 		});
@@ -82,7 +104,8 @@ public class ZusammenfassungFX {
 			public void actionPerformed(ActionEvent e) {
 				frame.remove(panel);
 				if (!YearActive) {
-					Monthcount = (Monthcount - 1) % 12;
+					Monthcount = ((Monthcount - 1) % 12);
+					if (Monthcount < 0) Monthcount = Monthcount + 12;
 					panel = new Infopanel<Month>(MainYear.getMonth(Monthcount));
 				} else {
 					if (Storage.isYear(MainYear.getYear() - 1)) {
@@ -90,7 +113,7 @@ public class ZusammenfassungFX {
 						panel = new Infopanel<Year>(MainYear);
 					}
 				}
-				
+				changeBounds();
 				addShow();
 				
 			}
@@ -111,7 +134,7 @@ public class ZusammenfassungFX {
 						panel = new Infopanel<Year>(MainYear);
 					}
 				}
-				
+				changeBounds();
 				addShow();
 				
 			}

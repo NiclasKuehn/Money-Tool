@@ -1,6 +1,6 @@
 //import java.awt.FlowLayout;  
 
-import Visuals.Start;
+import Visuals.StartFrame;
 
 public class Anwendung {
 	public static void main(String s[]) {
@@ -8,6 +8,6 @@ public class Anwendung {
 		//M.getEdited();
 		System.out.println("tette");
 		// MonthBillFX x = new MonthBillFX(M);
-		Start.go();
+		StartFrame.go();
 	}
 }

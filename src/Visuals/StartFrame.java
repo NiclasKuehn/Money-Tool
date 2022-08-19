@@ -2,6 +2,7 @@ package Visuals;
 
 import Data.Year;
 import Data.Storage;
+import Visuals.Components.JMButton;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-public class Start {
+public class StartFrame {
 	
 	private Year MainYear = new Year(2022);
 	private JFrame frame;
@@ -25,7 +26,7 @@ public class Start {
 	private int ThisYear = new GregorianCalendar().get(Calendar.YEAR);
 	private int ThisMonth = new GregorianCalendar().get(Calendar.MONTH);
 	
-	private Start() {
+	private StartFrame() {
 		
 		MainYear = Storage.loadYear(ThisYear);
 		//this.loadYear(ThisYear);
@@ -35,8 +36,45 @@ public class Start {
 		
 	}
 	
-	private void setCaption() {
-		this.Caption.setText("Jahresplan   " + MainYear.getName());
+	private void buildFrame() {
+		
+		init();
+		setBounds();
+		setText();
+		addShow();
+	}
+	
+	private void init() {
+		frame = new JFrame("Money-Tool");
+		panel = new JPanel();
+		Caption = new JLabel();
+		JahrTF = new JTextField(MainYear.getName());
+		
+	}
+	
+	private void setBounds() {
+		frame.setSize(750, 450);
+		Caption.setBounds(273, 15, 300, 25);
+		JahrAuswahlB.setBounds(80, 50, 48, 25);
+		JahrTF.setBounds(30, 50, 40, 25);
+		Uebersicht.setBounds(300, 50, 180, 25);
+	}
+	
+	private void setText() {
+		Caption.setFont(new Font("Canvas", Font.PLAIN, 28));
+		this.setCaption();
+	}
+	
+	private void addShow() {
+		panel.add(Caption);
+		panel.add(JahrAuswahlB);
+		panel.add(JahrTF);
+		panel.add(Uebersicht);
+		panel.setLayout(null);
+		frame.add(panel);
+		frame.setLocationRelativeTo(null);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setVisible(true);
 	}
 	
 	private void buildButtons() {
@@ -70,40 +108,8 @@ public class Start {
 		
 	}
 	
-	private void buildFrame() {
-		frame = new JFrame("Money-Tool");
-		frame.setSize(750, 450);
-		panel = new JPanel();
-		
-		
-		Caption = new JLabel();
-		Caption.setBounds(273, 15, 300, 25);
-		panel.add(Caption);
-		Caption.setFont(new Font("Canvas", Font.PLAIN, 28));
-		this.setCaption();
-		
-		
-		JahrAuswahlB.setBounds(80, 50, 48, 25);
-		JahrTF = new JTextField(MainYear.getName());
-		JahrTF.setBounds(30, 50, 40, 25);
-		
-		
-		panel.add(JahrAuswahlB);
-		panel.add(JahrTF);
-		
-		
-		Uebersicht.setBounds(300, 50, 180, 25);
-		panel.add(Uebersicht);
-		
-		panel.setLayout(null);
-		
-		
-		frame.add(panel);
-		
-		frame.setLocationRelativeTo(null);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		frame.setVisible(true);
+	private void setCaption() {
+		this.Caption.setText("Jahresplan   " + MainYear.getName());
 	}
 	
 	private void ActionListeners() {
@@ -152,11 +158,10 @@ public class Start {
 	}
 	
 	public static void go() {
-		Start s = new Start();
+		StartFrame s = new StartFrame();
 	}
 	
-	
 	private void Uebersichtsanzeige() {
-		ZusammenfassungFX x = new ZusammenfassungFX(MainYear);
+		ÜbersichtFrame x = new ÜbersichtFrame(MainYear);
 	}
 }
