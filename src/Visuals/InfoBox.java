@@ -1,3 +1,11 @@
+package Visuals;
+
+import Data.BillClass;
+import Data.BillContainer;
+import Data.Month;
+import Data.Year;
+import Enums.Reason;
+
 import java.awt.*;
 import java.util.ArrayList;
 

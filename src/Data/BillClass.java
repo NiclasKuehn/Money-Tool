@@ -1,3 +1,7 @@
+package Data;
+
+import Enums.Reason;
+
 import java.io.Serializable;
 
 public class BillClass implements Serializable {

@@ -1,8 +1,11 @@
+package Visuals;
+
+import Data.Year;
+import Data.Storage;
+
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.*;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;

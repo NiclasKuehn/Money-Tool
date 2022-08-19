@@ -1,10 +1,14 @@
+package Data;
+
+import Data.Year;
+
 import java.io.*;
 
 public class Storage {
 	public static boolean isYear(int Year) {
 		try {
 			ObjectInputStream stream = new ObjectInputStream(new FileInputStream(Integer.toString(Year) + ".txt"));
-			Year MainYear = (Year) stream.readObject();
+			Year MainYear = (Data.Year) stream.readObject();
 			stream.close();
 			return true;
 		} catch (ClassNotFoundException cnfex) {
@@ -20,12 +24,12 @@ public class Storage {
 		
 	}
 	
-	/*public static Year loadYear(int Year) {
-		Year year = new Year();
+	/*public static Data.Year loadYear(int Data.Year) {
+		Data.Year year = new Data.Year();
 		year.StringToYear();
 		try {
-			ObjectInputStream stream = new ObjectInputStream(new FileInputStream(Integer.toString(Year) + ".txt"));
-			Year MainYear = (Year) stream.readObject();
+			ObjectInputStream stream = new ObjectInputStream(new FileInputStream(Integer.toString(Data.Year) + ".txt"));
+			Data.Year MainYear = (Data.Year) stream.readObject();
 			stream.close();
 			return MainYear;
 			
@@ -41,7 +45,7 @@ public class Storage {
 			
 			
 		}
-		return new Year(Year);
+		return new Data.Year(Data.Year);
 	}*/
 	public static Year loadYear(int Year) {
 		

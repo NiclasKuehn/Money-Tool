@@ -1,7 +1,13 @@
+package Visuals;
+
+import Data.BillContainer;
+import Data.Month;
+import Data.Year;
+import Enums.Reason;
+
 import java.awt.*;
 import java.util.ArrayList;
 
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 public class PieChart<Type extends BillContainer> extends JPanel {

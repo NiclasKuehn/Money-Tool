@@ -1,6 +1,12 @@
+package Visuals;
+
+import Data.BillContainer;
+import Data.Month;
+import Data.Year;
+import Enums.MonthName;
+
 import java.awt.*;
 
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 public class Diagram<Type extends BillContainer> extends JPanel {

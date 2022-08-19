@@ -1,3 +1,9 @@
+package Visuals;
+
+import Data.Month;
+import Data.Storage;
+import Data.Year;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

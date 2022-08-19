@@ -1,3 +1,7 @@
+package Visuals;
+
+import Data.BillContainer;
+
 import javax.swing.*;
 import java.awt.*;
 

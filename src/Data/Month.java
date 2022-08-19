@@ -1,8 +1,12 @@
+package Data;
+
+import Enums.MonthName;
+import Enums.Reason;
+
 import java.awt.event.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import javax.swing.*;
-import javax.swing.text.Document;
 
 public class Month extends BillContainer implements Serializable {
 	private boolean used = false;
