@@ -3,6 +3,7 @@ package Visuals;
 import Data.Year;
 import Data.Storage;
 import Visuals.Components.JMButton;
+import Visuals.Components.MonthFrame;
 
 import javax.swing.*;
 import java.awt.*;
@@ -136,9 +137,7 @@ public class StartFrame {
 				@Override
 				public void actionPerformed(ActionEvent x) {
 					Storage.saveYear(MainYear);
-					MainYear.getMonth(e.getMonthID()).getEdited();
-					
-					
+					MonthFrame m = new MonthFrame(MainYear.getMonth(e.getMonthID()));
 				}
 			});
 			

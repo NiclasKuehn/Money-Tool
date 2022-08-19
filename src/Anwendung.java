@@ -1,5 +1,8 @@
 //import java.awt.FlowLayout;  
 
+import Data.Month;
+import Enums.MonthName;
+import Visuals.Components.MonthFrame;
 import Visuals.StartFrame;
 
 public class Anwendung {
