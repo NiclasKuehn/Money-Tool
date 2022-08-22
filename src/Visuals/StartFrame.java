@@ -14,56 +14,73 @@ import java.util.GregorianCalendar;
 
 public class StartFrame {
 	
-	private Year MainYear = new Year(2022);
+	private Year MainYear;
 	private JFrame frame;
 	private JPanel panel;
 	private JLabel Caption;
-	private ArrayList<JMButton> MButtons = new ArrayList<>();
-	private JButton JahrAuswahlB = new JButton("go");
+	private final ArrayList<JMButton> MButtons = new ArrayList<>();
+	private final JButton JahrAuswahlB = new JButton("go");
 	
-	private JButton Uebersicht = new JButton("Gesamtübersicht");
+	private final JButton Uebersicht = new JButton("Gesamtübersicht");
 	private JTextField JahrTF;
 	
-	private int ThisYear = new GregorianCalendar().get(Calendar.YEAR);
-	private int ThisMonth = new GregorianCalendar().get(Calendar.MONTH);
+	private final int ThisMonth = new GregorianCalendar().get(Calendar.MONTH);
 	
 	private StartFrame() {
 		
-		MainYear = Storage.loadYear(ThisYear);
-		//this.loadYear(ThisYear);
-		this.buildFrame();
-		this.buildButtons();
-		this.ActionListeners();
-		
-	}
-	
-	private void buildFrame() {
-		
+		MainYear = Storage.loadYear(new GregorianCalendar().get(Calendar.YEAR));
 		init();
 		setBounds();
 		setText();
 		addShow();
+		ActionListeners();
+		
 	}
+	
 	
 	private void init() {
 		frame = new JFrame("Money-Tool");
 		panel = new JPanel();
 		Caption = new JLabel();
 		JahrTF = new JTextField(MainYear.getName());
+		for (int i = 0; i < 12; i++) {
+			MButtons.add(new JMButton());
+		}
 		
 	}
 	
 	private void setBounds() {
 		frame.setSize(750, 450);
-		Caption.setBounds(273, 15, 300, 25);
-		JahrAuswahlB.setBounds(80, 50, 48, 25);
-		JahrTF.setBounds(30, 50, 40, 25);
-		Uebersicht.setBounds(300, 50, 180, 25);
+		int captionWidth = 350;
+		Caption.setBounds(frame.getWidth() / 2 - (captionWidth / 2), 35, captionWidth, 70);
+		JahrAuswahlB.setBounds(80, 150, 48, 25);
+		JahrTF.setBounds(32, 150, 40, 25);
+		Uebersicht.setBounds(280, 150, 180, 25);
+		int x = 0;
+		int y = 0;
+		for (JMButton e : MButtons) {
+			e.setBounds(32 + x, 180 + y, 160, 60);
+			if (x <= frame.getWidth() - (e.getWidth() + 10) * 2) {
+				x += e.getWidth() + 10;
+			} else {
+				x = 0;
+				y += e.getHeight() + 10;
+			}
+		}
 	}
 	
 	private void setText() {
-		Caption.setFont(new Font("Canvas", Font.PLAIN, 28));
+		Caption.setFont(new Font("Canvas", Font.PLAIN, 38));
 		this.setCaption();
+		int j = 0;
+		for (JMButton e :
+				MButtons) {
+			e.setBackground(new Color(153, 204, 255));
+			e.setText((MainYear.getMonth(j).getName()));
+			e.setMonthID(j);
+			j++;
+		}
+		MButtons.get(this.ThisMonth).setBackground(new Color(100, 255, 100));
 	}
 	
 	private void addShow() {
@@ -72,41 +89,15 @@ public class StartFrame {
 		panel.add(JahrTF);
 		panel.add(Uebersicht);
 		panel.setLayout(null);
+		
+		for (JMButton e : MButtons) {
+			panel.add(e);
+		}
+		
 		frame.add(panel);
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
-	}
-	
-	private void buildButtons() {
-		for (int i = 0; i < 12; i++) {
-			MButtons.add(new JMButton());
-		}
-		
-		//Buttons erstellen
-		{
-			int x = 0;
-			int y = 0;
-			int j = 0;
-			for (JMButton e :
-					MButtons) {
-				e.setBackground(new Color(153, 204, 255));
-				e.setText((MainYear.getMonth(j).getName()));
-				e.setMonthID(j);
-				e.setBounds(30 + x, 150 + y, 160, 60);
-				panel.add(e);
-				if (x <= frame.getWidth() - (e.getWidth() + 10) * 2) {
-					x += e.getWidth() + 10;
-				} else {
-					x = 0;
-					y += e.getHeight() + 10;
-				}
-				j++;
-			}
-			
-		}
-		MButtons.get(this.ThisMonth).setBackground(new Color(100, 255, 100));
-		
 	}
 	
 	private void setCaption() {
