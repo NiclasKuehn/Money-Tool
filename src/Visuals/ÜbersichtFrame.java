@@ -80,39 +80,56 @@ public class ÜbersichtFrame {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				super.keyPressed(e);
-				if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-					frame.remove(panel);
-					if (!YearActive) {
-						
-						Monthcount = (Monthcount + 1) % 12;
-						panel = new Infopanel<Month>(MainYear.getMonth(Monthcount));
-						
-					} else {
-						
-						if (Storage.isYear(MainYear.getYear() + 1)) {
-							MainYear = Storage.loadYear(MainYear.getYear() + 1);
-							panel = new Infopanel<Year>(MainYear);
+				switch (e.getKeyCode()) {
+					case KeyEvent.VK_LEFT -> {
+						frame.remove(panel);
+						if (!YearActive) {
+							Monthcount = ((Monthcount - 1) % 12);
+							if (Monthcount < 0) Monthcount = Monthcount + 12;
+							panel = new Infopanel<Month>(MainYear.getMonth(Monthcount));
+						} else {
+							if (Storage.isYear(MainYear.getYear() - 1)) {
+								MainYear = Storage.loadYear(MainYear.getYear() - 1);
+								panel = new Infopanel<Year>(MainYear);
+							}
 						}
+						changeBounds();
+						addShow();
+						
+						
 					}
-					changeBounds();
-					addShow();
-					
-				} else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-					frame.remove(panel);
-					if (!YearActive) {
-						Monthcount = ((Monthcount - 1) % 12);
-						if (Monthcount < 0) Monthcount = Monthcount + 12;
-						panel = new Infopanel<Month>(MainYear.getMonth(Monthcount));
-					} else {
-						if (Storage.isYear(MainYear.getYear() - 1)) {
-							MainYear = Storage.loadYear(MainYear.getYear() - 1);
-							panel = new Infopanel<Year>(MainYear);
+					case KeyEvent.VK_RIGHT -> {
+						frame.remove(panel);
+						if (!YearActive) {
+							
+							Monthcount = (Monthcount + 1) % 12;
+							panel = new Infopanel<Month>(MainYear.getMonth(Monthcount));
+							
+						} else {
+							
+							if (Storage.isYear(MainYear.getYear() + 1)) {
+								MainYear = Storage.loadYear(MainYear.getYear() + 1);
+								panel = new Infopanel<Year>(MainYear);
+							}
 						}
+						changeBounds();
+						addShow();
+						
 					}
-					changeBounds();
-					addShow();
-					
-					
+					case KeyEvent.VK_UP, KeyEvent.VK_DOWN -> {
+						frame.remove(panel);
+						if (YearActive) {
+							YearActive = false;
+							panel = new Infopanel<Month>(MainYear.getMonth(Monthcount));
+							
+						} else {
+							YearActive = true;
+							panel = new Infopanel<Year>(MainYear);
+							
+						}
+						changeBounds();
+						addShow();
+					}
 				}
 			}
 		});

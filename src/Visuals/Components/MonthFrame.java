@@ -6,6 +6,8 @@ import Data.Utils;
 import Enums.Reason;
 
 import javax.swing.*;
+import javax.swing.plaf.IconUIResource;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -25,21 +27,19 @@ public class MonthFrame extends JFrame {
 	ArrayList<JButton> RemoveButtons = new ArrayList<>();
 	JTextArea BillListL;
 	JTextArea SumLB;
+	Month OnlyReadMonth;
 	
 	public MonthFrame(Month month) {
+		OnlyReadMonth = month;
 		month.used = true;
 		init();
 		setBounds();
-		setText(month);
+		setText();
 		Listener(month);
 		addShow();
 		
 	}
 	
-	private void addButtons() {
-		EditButtons.add(new JButton("i"));
-		RemoveButtons.add(new JButton("x"));
-	}
 	
 	private void init() {
 		
@@ -56,11 +56,14 @@ public class MonthFrame extends JFrame {
 		BillListL.setFocusable(false);
 		SumLB = new JTextArea("Summe: ");
 		SumLB.setEditable(false);
+		initButtons();
+		
 	}
 	
 	private void setBounds() {
 		int offx = 5;
 		int offy = 10;
+		
 		reasonCB.setBounds(70 + offx, 40 + offy, 90, 25);
 		agenda.setBounds(5, 25, 300, 25);
 		IDLY.setBounds(2 + offx, 40 + offy, 200, 25);
@@ -72,11 +75,12 @@ public class MonthFrame extends JFrame {
 		
 	}
 	
-	private void setText(Month MainMonth) {
-		frame = new JFrame(MainMonth.getName());
+	private void setText() {
+		frame = new JFrame(OnlyReadMonth.getName());
 		pushButton.setText("next");
-		BillListL.setText(MainMonth.getBillistString());
-		SumLB.setText(MainMonth.getInfoString());
+		BillListL.setText(OnlyReadMonth.getBillistString());
+		BillListL.setFont(new Font("Canvas", Font.PLAIN, 13));
+		SumLB.setText(OnlyReadMonth.getInfoString());
 	}
 	
 	private void addShow() {
@@ -91,23 +95,63 @@ public class MonthFrame extends JFrame {
 		panel.add(reasonCB);
 		panel.setLayout(null);
 		
-		frame.add(panel);
 		frame.setSize(500, 600);
+		frame.add(panel);
 		frame.setLocationRelativeTo(null);
-		//frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
+		frame.setResizable(true);
 		frame.setVisible(true);
 		
 	}
 	
-	private void Listener(Month MainMonth) {
-		for (JButton editButton : EditButtons) {
-			panel.add(editButton);
-		}
-		for (JButton removeButton : RemoveButtons) {
-			panel.add(removeButton);
-		}
+	private void initButtons() {
 		
+		for (int i = 0; i < OnlyReadMonth.getBillList().size(); i++) {
+			EditButtons.add(new JButton("i"));
+			RemoveButtons.add(new JButton("x"));
+		}
+		placeEditButtons();
+	}
+	
+	private void addNewButtons() {
+		EditButtons.add(new JButton("i"));
+		RemoveButtons.add(new JButton("x"));
+		placeEditButtons();
+		frame.repaint();
+	}
+	
+	private void placeEditButtons() {
+		
+		int i = 0;
+		int g = 18;
+		for (JButton editButton : EditButtons) {
+			editButton.setBounds(285, 80 + (g * i), g, g);
+			editButton.setFont(new Font("Canvas", Font.PLAIN, 5));
+			//editButton.setIcon();
+			panel.add(editButton);
+			i++;
+		}
+		i = 0;
+		for (JButton removeButton : RemoveButtons) {
+			removeButton.setBounds(302, 80 + (g * i), g, g);
+			removeButton.setFont(new Font("Canvas", Font.PLAIN, 5));
+			//editButton.setIcon();
+			panel.add(removeButton);
+			i++;
+		}
+	}
+	
+	private void addBill(Month MainMonth) {
+		MainMonth.addBill(new BillClass(valueTF.getText(), reasonCB.getSelectedItem().toString(), remarkTF.getText()));
+		valueTF.setText("");
+		remarkTF.setText("");
+		BillListL.setText(MainMonth.getBillistString());
+		SumLB.setText(MainMonth.getInfoString());
+		addNewButtons();
+	}
+	
+	private void Listener(Month MainMonth) {
+		
+		//ComboBox autoSelect
 		reasonCB.setKeySelectionManager(new JComboBox.KeySelectionManager() {
 			@Override
 			public int selectionForKey(char aKey, ComboBoxModel<?> aModel) {
@@ -121,58 +165,46 @@ public class MonthFrame extends JFrame {
 				return -1;
 			}
 		});
+		//Enter Grund
 		reasonCB.addKeyListener(new KeyAdapter() {
 			
 			@Override
 			public void keyReleased(KeyEvent event) {
 				if (event.getKeyChar() == KeyEvent.VK_ENTER) {
-					MainMonth.addBill(new BillClass(valueTF.getText(), reasonCB.getSelectedItem().toString(), remarkTF.getText()));
-					BillListL.setText(MainMonth.getBillistString());
-					SumLB.setText(MainMonth.getInfoString());
-					valueTF.setText("");
-					remarkTF.setText("");
+					addBill(MainMonth);
 				}
 			}
 		});
-		
+		//Enter Betrag
 		valueTF.addActionListener(new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (Utils.isNumber(valueTF.getText())) {
-					MainMonth.addBill(new BillClass(valueTF.getText(), reasonCB.getSelectedItem().toString(), remarkTF.getText()));
-					BillListL.setText(MainMonth.getBillistString());
-					SumLB.setText(MainMonth.getInfoString());
+					addBill(MainMonth);
 				}
-				valueTF.setText("");
-				remarkTF.setText("");
+				
 				
 			}
 		});
+		//Enter Bemerkung
 		remarkTF.addActionListener(new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (Utils.isNumber(valueTF.getText())) {
-					MainMonth.addBill(new BillClass(valueTF.getText(), reasonCB.getSelectedItem().toString(), remarkTF.getText()));
-					BillListL.setText(MainMonth.getBillistString());
-					SumLB.setText(MainMonth.getInfoString());
+					addBill(MainMonth);
 				}
-				valueTF.setText("");
-				remarkTF.setText("");
-				
-				
 			}
 		});
-		
+		// next Button
 		pushButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (Utils.isNumber(valueTF.getText())) {
-					MainMonth.addBill(new BillClass(valueTF.getText(), reasonCB.getSelectedItem().toString(), remarkTF.getText()));
-					BillListL.setText(MainMonth.getBillistString());
-					SumLB.setText(MainMonth.getInfoString());
+					addBill(MainMonth);
 				}
 			}
 		});
+		// Fenster schließen
 		frame.addWindowListener(new java.awt.event.WindowAdapter() {
 			@Override
 			public void windowClosing(java.awt.event.WindowEvent windowEvent) {
@@ -181,15 +213,5 @@ public class MonthFrame extends JFrame {
 		});
 		
 		
-	}
-	
-	private void saveBill(Month MainMonth) {
-		if (Utils.isNumber(valueTF.getText())) {
-			MainMonth.addBill(new BillClass(valueTF.getText(), reasonCB.getSelectedItem().toString(), remarkTF.getText()));
-			BillListL.setText(MainMonth.getBillistString());
-			SumLB.setText(MainMonth.getInfoString());
-		}
-		valueTF.setText("");
-		remarkTF.setText("");
 	}
 }
