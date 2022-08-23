@@ -6,13 +6,11 @@ import Data.Utils;
 import Enums.Reason;
 
 import javax.swing.*;
-import javax.swing.plaf.IconUIResource;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
 
 public class MonthFrame extends JFrame {
 	JFrame frame;
@@ -23,8 +21,9 @@ public class MonthFrame extends JFrame {
 	JComboBox<String> reasonCB = new JComboBox<>(Reason.getStringValue());
 	JTextField remarkTF;
 	JButton pushButton;
-	ArrayList<JButton> EditButtons = new ArrayList<>();
-	ArrayList<JButton> RemoveButtons = new ArrayList<>();
+	JButton EditButtons;
+	JTextField EditNumberTF;
+	JButton RemoveButtons;
 	JTextArea BillListL;
 	JTextArea SumLB;
 	Month OnlyReadMonth;
@@ -43,6 +42,9 @@ public class MonthFrame extends JFrame {
 	
 	private void init() {
 		
+		EditButtons = new JButton(new ImageIcon("Recources/pen.png"));
+		RemoveButtons = new JButton(new ImageIcon("Recources/cross.png"));
+		EditNumberTF = new JTextField("");
 		panel = new JPanel();
 		agenda = new JLabel("ID   Betrag      Grund                       Bemerkung");
 		IDLY = new JLabel("0");
@@ -56,7 +58,6 @@ public class MonthFrame extends JFrame {
 		BillListL.setFocusable(false);
 		SumLB = new JTextArea("Summe: ");
 		SumLB.setEditable(false);
-		initButtons();
 		
 	}
 	
@@ -64,6 +65,9 @@ public class MonthFrame extends JFrame {
 		int offx = 5;
 		int offy = 10;
 		
+		EditButtons.setBounds(360, 380, 25, 25);
+		RemoveButtons.setBounds(385, 380, 25, 25);
+		EditNumberTF.setBounds(320, 380, 40, 25);
 		reasonCB.setBounds(70 + offx, 40 + offy, 90, 25);
 		agenda.setBounds(5, 25, 300, 25);
 		IDLY.setBounds(2 + offx, 40 + offy, 200, 25);
@@ -84,7 +88,9 @@ public class MonthFrame extends JFrame {
 	}
 	
 	private void addShow() {
-		
+		panel.add(EditButtons);
+		panel.add(RemoveButtons);
+		panel.add(EditNumberTF);
 		panel.add(SumLB);
 		panel.add(BillListL);
 		panel.add(pushButton);
@@ -103,42 +109,6 @@ public class MonthFrame extends JFrame {
 		
 	}
 	
-	private void initButtons() {
-		
-		for (int i = 0; i < OnlyReadMonth.getBillList().size(); i++) {
-			EditButtons.add(new JButton("i"));
-			RemoveButtons.add(new JButton("x"));
-		}
-		placeEditButtons();
-	}
-	
-	private void addNewButtons() {
-		EditButtons.add(new JButton("i"));
-		RemoveButtons.add(new JButton("x"));
-		placeEditButtons();
-		frame.repaint();
-	}
-	
-	private void placeEditButtons() {
-		
-		int i = 0;
-		int g = 18;
-		for (JButton editButton : EditButtons) {
-			editButton.setBounds(285, 80 + (g * i), g, g);
-			editButton.setFont(new Font("Canvas", Font.PLAIN, 5));
-			//editButton.setIcon();
-			panel.add(editButton);
-			i++;
-		}
-		i = 0;
-		for (JButton removeButton : RemoveButtons) {
-			removeButton.setBounds(302, 80 + (g * i), g, g);
-			removeButton.setFont(new Font("Canvas", Font.PLAIN, 5));
-			//editButton.setIcon();
-			panel.add(removeButton);
-			i++;
-		}
-	}
 	
 	private void addBill(Month MainMonth) {
 		MainMonth.addBill(new BillClass(valueTF.getText(), reasonCB.getSelectedItem().toString(), remarkTF.getText()));
@@ -146,7 +116,6 @@ public class MonthFrame extends JFrame {
 		remarkTF.setText("");
 		BillListL.setText(MainMonth.getBillistString());
 		SumLB.setText(MainMonth.getInfoString());
-		addNewButtons();
 	}
 	
 	private void Listener(Month MainMonth) {
