@@ -17,6 +17,7 @@ public class MonthFrame extends JFrame {
 	JPanel panel;
 	JLabel agenda;
 	JLabel IDLY;
+	JLabel IDText;
 	JTextField valueTF;
 	JComboBox<String> reasonCB = new JComboBox<>(Reason.getStringValue());
 	JTextField remarkTF;
@@ -42,6 +43,7 @@ public class MonthFrame extends JFrame {
 	
 	private void init() {
 		
+		IDText = new JLabel("ID:");
 		EditButtons = new JButton(new ImageIcon("Recources/pen.png"));
 		RemoveButtons = new JButton(new ImageIcon("Recources/cross.png"));
 		EditNumberTF = new JTextField("");
@@ -65,9 +67,10 @@ public class MonthFrame extends JFrame {
 		int offx = 5;
 		int offy = 10;
 		
-		EditButtons.setBounds(360, 380, 25, 25);
-		RemoveButtons.setBounds(385, 380, 25, 25);
-		EditNumberTF.setBounds(320, 380, 40, 25);
+		IDText.setBounds(320, 380, 25, 25);
+		EditButtons.setBounds(360, 380, 25, 24);
+		RemoveButtons.setBounds(385, 380, 25, 24);
+		EditNumberTF.setBounds(335, 380, 25, 25);
 		reasonCB.setBounds(70 + offx, 40 + offy, 90, 25);
 		agenda.setBounds(5, 25, 300, 25);
 		IDLY.setBounds(2 + offx, 40 + offy, 200, 25);
@@ -88,6 +91,7 @@ public class MonthFrame extends JFrame {
 	}
 	
 	private void addShow() {
+		panel.add(IDText);
 		panel.add(EditButtons);
 		panel.add(RemoveButtons);
 		panel.add(EditNumberTF);
@@ -119,7 +123,30 @@ public class MonthFrame extends JFrame {
 	}
 	
 	private void Listener(Month MainMonth) {
-		
+		EditButtons.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (!Utils.isNumber(EditNumberTF.getText())) return;
+				BillClass B = MainMonth.getBillList().get(Integer.parseInt(EditNumberTF.getText()));
+				MainMonth.remBill(Integer.parseInt(EditNumberTF.getText()));
+				valueTF.setText(Double.toString(B.value));
+				reasonCB.setSelectedIndex(B.reason.ordinal());
+				remarkTF.setText(B.remark);
+				BillListL.setText(MainMonth.getBillistString());
+				SumLB.setText(MainMonth.getInfoString());
+				
+			}
+		});
+		RemoveButtons.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (!Utils.isNumber(EditNumberTF.getText())) return;
+				if (MainMonth.getBillList().size() <= Integer.parseInt(EditNumberTF.getText())) return;
+				MainMonth.remBill(Integer.parseInt(EditNumberTF.getText()));
+				BillListL.setText(MainMonth.getBillistString());
+				SumLB.setText(MainMonth.getInfoString());
+			}
+		});
 		//ComboBox autoSelect
 		reasonCB.setKeySelectionManager(new JComboBox.KeySelectionManager() {
 			@Override
