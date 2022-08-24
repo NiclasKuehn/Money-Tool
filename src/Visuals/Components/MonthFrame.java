@@ -115,6 +115,7 @@ public class MonthFrame extends JFrame {
 	
 	
 	private void addBill(Month MainMonth) {
+		if (!Utils.isNumber(valueTF.getText()))return;
 		MainMonth.addBill(new BillClass(valueTF.getText(), reasonCB.getSelectedItem().toString(), remarkTF.getText()));
 		valueTF.setText("");
 		remarkTF.setText("");

@@ -10,6 +10,8 @@ import java.awt.event.*;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 public class ÜbersichtFrame {
 	private Year MainYear;
@@ -21,21 +23,15 @@ public class ÜbersichtFrame {
 	private JButton WeiterB;
 	private JButton ZurückB;
 	private boolean YearActive = true;
-	private int Monthcount = 0;
+	private int ThisMonth =  new GregorianCalendar().get(Calendar.MONTH);
 	
 	
 	public ÜbersichtFrame(Year Year) {
 		MainYear = Year;
-		Calculate();
 		init();
 		setBounds();
 		Listeners();
 		addShow();
-	}
-	
-	private void Calculate() {
-	
-		
 	}
 	
 	private void init() {
@@ -84,9 +80,9 @@ public class ÜbersichtFrame {
 					case KeyEvent.VK_LEFT -> {
 						frame.remove(panel);
 						if (!YearActive) {
-							Monthcount = ((Monthcount - 1) % 12);
-							if (Monthcount < 0) Monthcount = Monthcount + 12;
-							panel = new Infopanel<Month>(MainYear.getMonth(Monthcount));
+							ThisMonth = ((ThisMonth - 1) % 12);
+							if (ThisMonth < 0) ThisMonth = ThisMonth + 12;
+							panel = new Infopanel<Month>(MainYear.getMonth(ThisMonth));
 						} else {
 							if (Storage.isYear(MainYear.getYear() - 1)) {
 								MainYear = Storage.loadYear(MainYear.getYear() - 1);
@@ -102,8 +98,8 @@ public class ÜbersichtFrame {
 						frame.remove(panel);
 						if (!YearActive) {
 							
-							Monthcount = (Monthcount + 1) % 12;
-							panel = new Infopanel<Month>(MainYear.getMonth(Monthcount));
+							ThisMonth = (ThisMonth + 1) % 12;
+							panel = new Infopanel<Month>(MainYear.getMonth(ThisMonth));
 							
 						} else {
 							
@@ -120,7 +116,7 @@ public class ÜbersichtFrame {
 						frame.remove(panel);
 						if (YearActive) {
 							YearActive = false;
-							panel = new Infopanel<Month>(MainYear.getMonth(Monthcount));
+							panel = new Infopanel<Month>(MainYear.getMonth(ThisMonth));
 							
 						} else {
 							YearActive = true;
@@ -148,7 +144,7 @@ public class ÜbersichtFrame {
 				frame.remove(panel);
 				if (YearActive) {
 					YearActive = false;
-					panel = new Infopanel<Month>(MainYear.getMonth(Monthcount));
+					panel = new Infopanel<Month>(MainYear.getMonth(ThisMonth));
 					
 				} else {
 					YearActive = true;
@@ -165,9 +161,9 @@ public class ÜbersichtFrame {
 			public void actionPerformed(ActionEvent e) {
 				frame.remove(panel);
 				if (!YearActive) {
-					Monthcount = ((Monthcount - 1) % 12);
-					if (Monthcount < 0) Monthcount = Monthcount + 12;
-					panel = new Infopanel<Month>(MainYear.getMonth(Monthcount));
+					ThisMonth = ((ThisMonth - 1) % 12);
+					if (ThisMonth < 0) ThisMonth = ThisMonth + 12;
+					panel = new Infopanel<Month>(MainYear.getMonth(ThisMonth));
 				} else {
 					if (Storage.isYear(MainYear.getYear() - 1)) {
 						MainYear = Storage.loadYear(MainYear.getYear() - 1);
@@ -185,8 +181,8 @@ public class ÜbersichtFrame {
 				frame.remove(panel);
 				if (!YearActive) {
 					
-					Monthcount = (Monthcount + 1) % 12;
-					panel = new Infopanel<Month>(MainYear.getMonth(Monthcount));
+					ThisMonth = (ThisMonth + 1) % 12;
+					panel = new Infopanel<Month>(MainYear.getMonth(ThisMonth));
 					
 				} else {
 					

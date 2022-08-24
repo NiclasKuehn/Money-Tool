@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Money-Tool">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/src/BetaTester/Money-Tool.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

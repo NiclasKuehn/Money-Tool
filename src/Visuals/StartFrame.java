@@ -51,6 +51,7 @@ public class StartFrame {
 	
 	private void setBounds() {
 		frame.setSize(750, 450);
+		frame.setResizable(false);
 		int captionWidth = 350;
 		Caption.setBounds(frame.getWidth() / 2 - (captionWidth / 2), 35, captionWidth, 70);
 		JahrAuswahlB.setBounds(80, 150, 48, 25);
